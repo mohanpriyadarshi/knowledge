@@ -1,0 +1,747 @@
+http://blog.kompany.org/2013/02/23/setting-up-apache-zookeeper-on-os-x-in-five-minutes-or-less/
+
+
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html id="ie8" lang="en">
+<![endif]-->
+<!--[if !(IE 8)]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+<meta charset="UTF-8" />
+<title>Apache ZooKeeper on OS X in Five Minutes or Less | 2046k</title>
+<link rel="profile" href="http://gmpg.org/xfn/11" />
+<link rel="pingback" href="http://blog.kompany.org/xmlrpc.php" />
+		<script src='https://r-login.wordpress.com/remote-login.php?action=js&amp;host=blog.kompany.org&amp;id=3673036&amp;t=1438347742&amp;back=http%3A%2F%2Fblog.kompany.org%2F2013%2F02%2F23%2Fsetting-up-apache-zookeeper-on-os-x-in-five-minutes-or-less%2F' type="text/javascript"></script>
+		<script type="text/javascript">
+		/* <![CDATA[ */
+			if ( 'function' === typeof WPRemoteLogin ) {
+				document.cookie = "wordpress_test_cookie=test; path=/";
+				if ( document.cookie.match( /(;|^)\s*wordpress_test_cookie\=/ ) ) {
+					WPRemoteLogin();
+				}
+			}
+		/* ]]> */
+		</script>
+		<link rel="alternate" type="application/rss+xml" title="2046k &raquo; Feed" href="http://blog.kompany.org/feed/" />
+<link rel="alternate" type="application/rss+xml" title="2046k &raquo; Comments Feed" href="http://blog.kompany.org/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="2046k &raquo; Apache ZooKeeper on OS X in Five Minutes or&nbsp;Less Comments Feed" href="http://blog.kompany.org/2013/02/23/setting-up-apache-zookeeper-on-os-x-in-five-minutes-or-less/feed/" />
+<script type="text/javascript">
+/* <![CDATA[ */
+function addLoadEvent(func){var oldonload=window.onload;if(typeof window.onload!='function'){window.onload=func;}else{window.onload=function(){oldonload();func();}}}
+/* ]]> */
+</script>
+<link rel='stylesheet' id='all-css-0' href='https://s0.wp.com/_static/??-eJx9kdtqwzAMhl9onmg7ut6MPYvjqK5SyTI+EPr2cxbWAxm+EfrF9yGBYI7GaSgYCkg1kaunkCELMd5i0gldeU3vLuc3+F9jumKGCUu07mp+0wYfWP1DUO9x1FrMWZl1hplGj90dThO2uURbFkJwJIuM0rCeJvH4Zy3tpR24ve2Jn2OjzTDEhDmbVoWqmHJpi7beOoZYByAZLNvgcA+53Bh7O1B0orWuGEHQQo3M96bne1TD6mwhDS/BnNlS6qkJlz+01kOjnuIifcvX7uNw/Dwd9qfd9AO+Ns2g' type='text/css' media='all' />
+<link rel='stylesheet' id='print-css-1' href='https://s0.wp.com/wp-content/mu-plugins/global-print/global-print.css?m=1387483371g' type='text/css' media='print' />
+<link rel='stylesheet' id='all-css-2' href='https://s0.wp.com/wp-content/themes/h4/global.css?m=1420737423g' type='text/css' media='all' />
+<script type='text/javascript'>
+/* <![CDATA[ */
+var LoggedOutFollow = {"invalid_email":"Your subscription did not succeed, please try again with a valid email address."};
+/* ]]> */
+</script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var Imbalance2 = {"is_rtl":"0","color":"#cccccc","search":"Search"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://s0.wp.com/_static/??-eJyFkGFuwyAMhS80gppmP6edBYhLnQJm2DRqT18qLVraRp1kCRs+P56enrPC5EIdgfXU6qdCufwe3cQf+h2gIvpiBLqIaYEdJYEkdzaSxQCqMhTj210TOtAGl4klAnODNl4fLWE6I8z/YhNINu6kCjBeX1RtIK9yqB4T69Z7GKmKOlAINOsZRw/yvCNHaB51rlZjtCaY5KDXAe3ytarYucpCcR3HOrtomFIzt5HWG/W/WbErmO/OvuPXbtjvP3f90A/TDervqPE='></script>
+<link rel='stylesheet' id='all-css-0' href='https://s2.wp.com/wp-content/mu-plugins/highlander-comments/style.css?m=1377793621g' type='text/css' media='all' />
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='highlander-comments-ie7-css'  href='https://s2.wp.com/wp-content/mu-plugins/highlander-comments/style-ie7.css?m=1351637563g&#038;ver=20110606' type='text/css' media='all' />
+<![endif]-->
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://2046k.wordpress.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://s1.wp.com/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='Bash Scripting for&nbsp;Developers' href='http://blog.kompany.org/2012/01/17/bash-scripting-for-developers/' />
+<link rel='next' title='Safely Sharing a ZooKeeper Cluster by &#8220;Chrooting&#8221; via the Connect&nbsp;String' href='http://blog.kompany.org/2015/02/28/safely-sharing-a-zookeeper-cluster-by-chrooting-via-the-connect-string/' />
+<meta name="generator" content="WordPress.com" />
+<link rel='canonical' href='http://blog.kompany.org/2013/02/23/setting-up-apache-zookeeper-on-os-x-in-five-minutes-or-less/' />
+<link rel='shortlink' href='http://wp.me/pfpww-1X' />
+<link rel="alternate" type="application/json+oembed" href="https://public-api.wordpress.com/oembed/1.0/?format=json&amp;url=http%3A%2F%2Fblog.kompany.org%2F2013%2F02%2F23%2Fsetting-up-apache-zookeeper-on-os-x-in-five-minutes-or-less%2F&amp;for=wpcom-auto-discovery" /><link rel="alternate" type="application/xml+oembed" href="https://public-api.wordpress.com/oembed/1.0/?format=xml&amp;url=http%3A%2F%2Fblog.kompany.org%2F2013%2F02%2F23%2Fsetting-up-apache-zookeeper-on-os-x-in-five-minutes-or-less%2F&amp;for=wpcom-auto-discovery" />
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Apache ZooKeeper on OS X in Five Minutes or Less" />
+<meta property="og:url" content="http://blog.kompany.org/2013/02/23/setting-up-apache-zookeeper-on-os-x-in-five-minutes-or-less/" />
+<meta property="og:description" content="This is a quick guide to running Apache ZooKeeper on OS X. Basic knowledge of getting around in the terminal is assumed. Hope it&#039;s helpful! Download Apache ZooKeeper Release bundles are available a..." />
+<meta property="article:published_time" content="2013-02-23T18:59:20+00:00" />
+<meta property="article:modified_time" content="2015-03-11T19:23:10+00:00" />
+<meta property="og:site_name" content="2046k" />
+<meta property="og:image" content="https://s0.wp.com/i/blank.jpg" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:site" content="@wordpressdotcom" />
+<meta name="twitter:card" content="summary" />
+<meta property="article:publisher" content="https://www.facebook.com/WordPresscom" />
+<link rel="shortcut icon" type="image/x-icon" href="http://s2.wp.com/i/favicon.ico?m=1405977958g" sizes="16x16 24x24 32x32 48x48" />
+<link rel="icon" type="image/x-icon" href="http://s2.wp.com/i/favicon.ico?m=1405977958g" sizes="16x16 24x24 32x32 48x48" />
+<link rel="apple-touch-icon-precomposed" href="http://s0.wp.com/i/webclip.png?m=1391188133g" />
+<link rel='openid.server' href='http://2046k.wordpress.com/?openidserver=1' />
+<link rel='openid.delegate' href='http://2046k.wordpress.com/' />
+<link rel="search" type="application/opensearchdescription+xml" href="http://blog.kompany.org/osd.xml" title="2046k" />
+<link rel="search" type="application/opensearchdescription+xml" href="https://wordpress.com/opensearch.xml" title="WordPress.com" />
+	<style type="text/css">
+		body {
+			background: #734969;
+		}
+	</style>
+		<style type="text/css">
+	/* <![CDATA[ */
+		a,
+		.menu a:hover,
+		.menu ul .current_page_item > a,
+		.menu ul .current_page_ancestor > a,
+		.menu ul .current-menu-item > a,
+		.menu ul .current-menu-ancestor > a,
+		#nav-above a:hover,
+		#footer a:hover,
+		.entry-meta a:hover,
+		.widget_flickr #flickr_badge_uber_wrapper a:hover,
+		.widget_flickr #flickr_badge_uber_wrapper a:link,
+		.widget_flickr #flickr_badge_uber_wrapper a:active,
+		.widget_flickr #flickr_badge_uber_wrapper a:visited {
+			color: #cccccc;
+		}
+		.infinite-scroll #infinite-handle:hover span {
+			background: #cccccc;
+		}
+		.infinite-scroll .infinite-loader {
+			color: #cccccc;
+		}
+		blockquote {
+			border-color: #cccccc;
+		}
+		.box .texts {
+			border: 20px solid #cccccc;
+			background: #cccccc;
+		}
+	/* ]]> */
+	</style>
+	<style type="text/css">
+	/* <![CDATA[ */
+		#wrapper {
+			width: 960px; margin: 0 auto;		}
+	/* ]]> */
+	</style>
+<meta name="application-name" content="2046k" /><meta name="msapplication-window" content="width=device-width;height=device-height" /><meta name="msapplication-task" content="name=Subscribe;action-uri=http://blog.kompany.org/feed/;icon-uri=http://s2.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=Sign up for a free blog;action-uri=http://wordpress.com/signup/;icon-uri=http://s2.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=WordPress.com Support;action-uri=http://support.wordpress.com/;icon-uri=http://s2.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=WordPress.com Forums;action-uri=http://forums.wordpress.com/;icon-uri=http://s2.wp.com/i/favicon.ico" /><meta name="title" content="Apache ZooKeeper on OS X in Five Minutes or&nbsp;Less | 2046k on WordPress.com" />
+<meta name="description" content="This is a quick guide to running Apache ZooKeeper on OS X. Basic knowledge of getting around in the terminal is assumed. Hope it&#039;s helpful! Download Apache ZooKeeper Release bundles are available at the ZooKeeper downloads page. Unpack the Bundle The following will install ZooKeeper at ~/opt/zookeeper but you can install it anywhere you want.&hellip;" />
+<style type="text/css" id="custom-background-css">
+body.custom-background { background-color: #734969; }
+</style>
+<style type="text/css" id="syntaxhighlighteranchor"></style>
+<style type="text/css" id="custom-colors-css">
+.box .texts {
+	border-style: solid;
+	border-width: 20px;
+}
+.box .texts .categories a, .box .texts a, .box .texts .posted, .box .texts .posted a { color: #FFFFFF;}
+body { background-color: #734969;}
+a,.menu a:hover,.menu ul a:hover,.menu ul .current_page_item > a,.menu ul .current_page_ancestor > a,.menu ul .current-menu-item > a,.menu ul .current-menu-ancestor > a,#nav-above a:hover,#footer a:hover,.entry-meta a:hover,.widget_flickr #flickr_badge_uber_wrapper a:hover,.widget_flickr #flickr_badge_uber_wrapper a:link,.widget_flickr #flickr_badge_uber_wrapper a:active,.widget_flickr #flickr_badge_uber_wrapper a:visited { color: #207178;}
+.box .texts,.fetch:hover { background: #207178;}
+blockquote,.box .texts { border-color: #207178;}
+.menu ul a,#reply-title ,.entry-title,.page-title,.post_title,.post_title h1,.post_title h2,#comments-title,#site-title a,#site-title,.widget-title a,.widget-title,.box h1,.box h1 a { color: #9C601A;}
+.entry-content table,.entry-content td,.comment-body td,.comment-body table,#header,#footer,.commentlist li > div,.commentlist .pingback,.comment-content,#featured-posts,input[type=text],input[type=email],input[type=password],textarea { border-color: #F1C694;}
+.entry-content table,.entry-content td,.comment-body td,.comment-body table,#header,#footer,.commentlist li > div,.commentlist .pingback,.comment-content,#featured-posts,input[type=text],input[type=email],input[type=password],textarea { border-color: rgba( 241, 198, 148, 0.2 );}
+hr,.commentlist li.bypostauthor > div { background-color: #F1C694;}
+hr,.commentlist li.bypostauthor > div { background-color: rgba( 241, 198, 148, 0.2 );}
+</style>
+		<link rel="stylesheet" id="custom-css-css" type="text/css" href="https://s1.wp.com/?custom-css=1&#038;csblog=fpww&#038;cscache=6&#038;csrev=17" />
+		</head>
+
+<body class="single single-post postid-121 single-format-standard custom-background mp6 customizer-styles-applied highlander-enabled highlander-light custom-colors">
+<div id="wrapper">
+	<div id="header" class="clear-fix">
+		<div id="branding">
+						<div id="site-title">
+				<a href="http://blog.kompany.org/" title="2046k">2046k</a>
+			</div>
+			<h2 id="site-description"></h2>
+					</div>
+		<div id="header-left">
+			<div class="menu"></div>
+		</div>
+		<div id="header-center">
+					</div>
+		<div id="header-right">
+				<div class="widget widget_search">
+		<form role="search" method="get" id="searchform" class="searchform" action="http://blog.kompany.org/">
+				<div>
+					<label class="screen-reader-text" for="s">Search for:</label>
+					<input type="text" value="" name="s" id="s" />
+					<input type="submit" id="searchsubmit" value="Search" />
+				</div>
+			</form>	</div>
+		</div>
+	</div>
+
+	<div id="main" class="clear-fix">
+<div id="container">
+	<div id="content">
+
+	
+		<div class="post_title clear-fix">
+	<h1 class="entry-title">Apache ZooKeeper on OS X in Five Minutes or&nbsp;Less</h1>
+
+	<div id="nav-above" class="navigation">
+		<div class="nav-previous">
+					<a href="http://blog.kompany.org/2012/01/17/bash-scripting-for-developers/" rel="prev">&laquo; Previous</a>				</div>
+		<span class="main-separator">/</span>
+		<div class="nav-next">
+					<a href="http://blog.kompany.org/2015/02/28/safely-sharing-a-zookeeper-cluster-by-chrooting-via-the-connect-string/" rel="next">Next &raquo;</a>				</div>
+	</div><!-- #nav-above -->
+
+	<div class="entry-meta">
+		<span class="byline"><span class="meta-sep">By</span> <a class="url fn n" href="http://blog.kompany.org/author/2046k/" title="View all posts by ypai" rel="author">ypai</a></span>
+		<span class="online"><span class="main-separator"> / </span><a href="http://blog.kompany.org/2013/02/23/setting-up-apache-zookeeper-on-os-x-in-five-minutes-or-less/" title="10:59 AM" rel="bookmark"><time class="entry-date" datetime="2013-02-23T10:59:20+00:00" pubdate>February 23, 2013</time></a></span>
+		<span class="main-separator"> / </span><a href="http://blog.kompany.org/category/apache-zookeeper/" rel="category tag">Apache ZooKeeper</a>, <a href="http://blog.kompany.org/category/distributed-systems/" rel="category tag">Distributed Systems</a>
+					<span class="main-separator"> / </span><a href="http://blog.kompany.org/2013/02/23/setting-up-apache-zookeeper-on-os-x-in-five-minutes-or-less/#comments">3 comments</a>		
+			</div><!-- .entry-meta -->
+</div><!-- .post_title -->
+
+<div id="post-121" class="post-121 post type-post status-publish format-standard hentry category-apache-zookeeper category-distributed-systems">
+	<div class="entry-content">
+
+		<p>This is a quick guide to running Apache ZooKeeper on OS X. Basic knowledge of getting around in the terminal is assumed. Hope it&#8217;s helpful!</p>
+<h2>Download Apache ZooKeeper</h2>
+<p>Release bundles are available at the <a href="http://zookeeper.apache.org/releases.html">ZooKeeper downloads page</a>.</p>
+<h2>Unpack the Bundle</h2>
+<p>The following will install ZooKeeper at ~<code>/opt/zookeeper</code> but you can install it anywhere you want.</p>
+<p>Create directory if it doesn&#8217;t exist:</p>
+<pre><strong>$ mkdir ~/opt</strong>
+</pre>
+<p>Extract the archive to target directory:</p>
+<pre><strong>$ tar xf zookeeper-3.4.5.tar.gz -C ~/opt</strong>
+</pre>
+<p>Create a soft-link for convenience:</p>
+<pre><strong>$ ln -s ~/opt/zookeeper-3.4.5 ~/opt/zookeeper</strong>
+</pre>
+<h2>Copy Sample Configuration File</h2>
+<p>This is the two minute drill, but find more details in the ZooKeeper documentation under <a href="http://zookeeper.apache.org/doc/r3.4.5/zookeeperAdmin.html#sc_configurationhttp://">configuration options</a>.</p>
+<pre><strong>$ cd ~/opt/zookeeper
+$ cp conf/zoo_sample.cfg conf/zoo.cfg</strong>
+</pre>
+<h2>Start ZooKeeper</h2>
+<p>Go to where you installed ZooKeeper:</p>
+<pre><strong>$ cd ~/opt/zookeeper</strong>
+</pre>
+<p>Run without server administration script arguments to see available options:</p>
+<pre><strong>$ bin/zkServer.sh</strong>
+JMX enabled by default
+Using config: /opt/zookeeper/bin/../conf/zoo.cfg
+Usage: bin/zkServer.sh {start|start-foreground|stop|restart|status|upgrade|print-cmd}
+</pre>
+<p>Start ZooKeeper:</p>
+<pre><strong>$ bin/zkServer.sh start</strong>
+</pre>
+<h2>Check ZooKeeper is Running Correctly</h2>
+<p>Telnet to the ZooKeeper port and issue one of <a href="http://zookeeper.apache.org/doc/r3.4.5/zookeeperAdmin.html#sc_zkCommands">ZooKeeper&#8217;s four letter words</a>, you should see similar output:</p>
+<pre><strong>$ telnet localhost 2181</strong>
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+<strong>stat</strong>
+Zookeeper version: 3.4.5-1392090, built on 09/30/2012 17:52 GMT
+Clients:
+/127.0.0.1:55837[0](queued=0,recved=1,sent=0)
+
+Latency min/avg/max: 0/0/736
+Received: 25982
+Sent: 26053
+Connections: 1
+Outstanding: 0
+Zxid: 0x19dd
+Mode: standalone
+Node count: 13
+Connection closed by foreign host.
+</pre>
+<h2>Explore ZooKeeper using the Command Line Client</h2>
+<p>Run the command line client to explore the nodes and data in ZooKeeper:</p>
+<pre>$ cd ~/opt/zookeeper
+$ bin/zkCli.sh -server localhost:2181
+
+</pre>
+<p>Below we issue a series of commands to create a sample ZooKeeper node, set some JSON as its value, and then delete it:</p>
+<pre><strong>[zk: localhost:2181(CONNECTED) 12] ls /i/am/in</strong>
+Node does not exist: /i/am/in
+<strong>[zk: localhost:2181(CONNECTED) 6] create /my-node {}</strong>
+Created /my-node
+<strong>[zk: localhost:2181(CONNECTED) 7] ls /</strong>
+[my-node]
+<strong>[zk: localhost:2181(CONNECTED) 8] get /my-node</strong>
+{}
+cZxid = 0x19e6
+ctime = Sat Feb 23 10:53:05 PST 2013
+mZxid = 0x19e6
+mtime = Sat Feb 23 10:53:05 PST 2013
+pZxid = 0x19e6
+cversion = 0
+dataVersion = 0
+aclVersion = 0
+ephemeralOwner = 0x0
+dataLength = 2
+numChildren = 0
+<strong>[zk: localhost:2181(CONNECTED) 9] set /my-node {"key":"value"}</strong>
+cZxid = 0x19e6
+ctime = Sat Feb 23 10:53:05 PST 2013
+mZxid = 0x19e7
+mtime = Sat Feb 23 10:53:34 PST 2013
+pZxid = 0x19e6
+cversion = 0
+dataVersion = 1
+aclVersion = 0
+ephemeralOwner = 0x0
+dataLength = 15
+numChildren = 0
+<strong>[zk: localhost:2181(CONNECTED) 10] get /my-node</strong>
+{"key":"value"}
+cZxid = 0x19e6
+ctime = Sat Feb 23 10:53:05 PST 2013
+mZxid = 0x19e7
+mtime = Sat Feb 23 10:53:34 PST 2013
+pZxid = 0x19e6
+cversion = 0
+dataVersion = 1
+aclVersion = 0
+ephemeralOwner = 0x0
+dataLength = 15
+numChildren = 0
+<strong>[zk: localhost:2181(CONNECTED) 11] delete /my-node</strong>
+<strong>[zk: localhost:2181(CONNECTED) 7] ls /</strong>
+[]
+<strong>[zk: localhost:2181(CONNECTED) 13] help</strong>
+ZooKeeper -server host:port cmd args
+connect host:port
+get path [watch]
+ls path [watch]
+set path data [version]
+rmr path
+delquota [-n|-b] path
+quit
+printwatches on|off
+create [-s] [-e] path data acl
+stat path [watch]
+close
+ls2 path [watch]
+history
+listquota path
+setAcl path acl
+getAcl path
+sync path
+redo cmdno
+addauth scheme auth
+delete path [version]
+setquota -n|-b val path
+</pre>
+
+		<div class="entry-utility">
+								</div><!-- .entry-utility -->
+	</div><!-- .entry-content -->
+
+	<div id="entry-author-info" class="clear-fix">
+		<div id="author-avatar">
+			<img alt='' src='http://0.gravatar.com/avatar/003c73fc3c08774fb925cc534142d9bc?s=60&#038;d=identicon&#038;r=G' class='avatar avatar-60' height='60' width='60' />		</div><!-- #author-avatar -->
+		<div id="author-description">
+			<h3>About ypai</h3>
+			Software engineering leader +hacker +architect +entrepreneur. Making things useful. Imagining useful things.			<div id="author-link">
+	    		<a href="http://blog.kompany.org/author/2046k/">
+	    			View all posts by ypai <span class="meta-nav">&rarr;</span>	    		</a>
+	    	</div><!-- #author-link	-->
+	    </div><!-- #author-description -->
+	</div><!-- #entry-author-info -->
+</div><!-- #post-121 -->
+		<div id="comments">
+
+			<h3 id="comments-title">
+			3 comments		</h3>
+
+		
+		<ol class="commentlist">
+				<li class="comment even thread-even depth-1 highlander-comment" id="li-comment-148">
+		<div id="comment-148">
+			<div class="comment-avatar">
+				<img alt='' src='http://i1.wp.com/graph.facebook.com/1590703873/picture?q=type%3Dlarge%26_md5%3De1eec214aa33c903282d9604e47574c4&#038;resize=60%2C60' class='avatar avatar-60' height='60' width='60' />			</div>
+		
+			<div class="comment-author">
+				<cite class="fn"><a href='https://www.facebook.com/daniel.nikiphorov' rel='external nofollow' class='url'>Daniel Nikiphorov</a></cite>			</div>
+
+			<div class="comment-meta commentmetadata">
+				<a href="http://blog.kompany.org/2013/02/23/setting-up-apache-zookeeper-on-os-x-in-five-minutes-or-less/#comment-148"><time pubdate datetime="2014-10-02T23:45:42+00:00">October 2, 2014 at 11:45 PM</time></a>							</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="reply">
+				<a class='comment-reply-link' href='/2013/02/23/setting-up-apache-zookeeper-on-os-x-in-five-minutes-or-less/?replytocom=148#respond' onclick='return addComment.moveForm( "comment-148", "148", "respond", "121" )' aria-label='Reply to Daniel Nikiphorov'>Reply</a>			</div><!-- .reply -->
+
+			<div class="comment-body"><p>&#8220;Create a soft-link for convenience:</p>
+<p>$ ln ~/opt/zookeeper-3.4.5 ~/opt/zookeeper&#8221;</p>
+<p>need to change to</p>
+<p>$ ln -s ~/opt/zookeeper-3.4.5 ~/opt/zookeeper</p>
+</div>
+		</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-2046k comment-author-is-site-member bypostauthor odd alt depth-2 highlander-comment" id="li-comment-149">
+		<div id="comment-149">
+			<div class="comment-avatar">
+				<img alt='' src='http://0.gravatar.com/avatar/003c73fc3c08774fb925cc534142d9bc?s=60&#038;d=identicon&#038;r=G' class='avatar avatar-60' height='60' width='60' />			</div>
+		
+			<div class="comment-author">
+				<cite class="fn">ypai</cite>			</div>
+
+			<div class="comment-meta commentmetadata">
+				<a href="http://blog.kompany.org/2013/02/23/setting-up-apache-zookeeper-on-os-x-in-five-minutes-or-less/#comment-149"><time pubdate datetime="2014-10-03T05:13:49+00:00">October 3, 2014 at 5:13 AM</time></a>							</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="reply">
+				<a class='comment-reply-link' href='/2013/02/23/setting-up-apache-zookeeper-on-os-x-in-five-minutes-or-less/?replytocom=149#respond' onclick='return addComment.moveForm( "comment-149", "149", "respond", "121" )' aria-label='Reply to ypai'>Reply</a>			</div><!-- .reply -->
+
+			<div class="comment-body"><p>Thanks!  Updated!</p>
+</div>
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1 highlander-comment" id="li-comment-170">
+		<div id="comment-170">
+			<div class="comment-avatar">
+				<img alt='' src='http://0.gravatar.com/avatar/31c459844b1978e5b0b577d23d7d5279?s=60&#038;d=identicon&#038;r=G' class='avatar avatar-60' height='60' width='60' />			</div>
+		
+			<div class="comment-author">
+				<cite class="fn">Normin</cite>			</div>
+
+			<div class="comment-meta commentmetadata">
+				<a href="http://blog.kompany.org/2013/02/23/setting-up-apache-zookeeper-on-os-x-in-five-minutes-or-less/#comment-170"><time pubdate datetime="2015-01-14T16:33:18+00:00">January 14, 2015 at 4:33 PM</time></a>							</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="reply">
+				<a class='comment-reply-link' href='/2013/02/23/setting-up-apache-zookeeper-on-os-x-in-five-minutes-or-less/?replytocom=170#respond' onclick='return addComment.moveForm( "comment-170", "170", "respond", "121" )' aria-label='Reply to Normin'>Reply</a>			</div><!-- .reply -->
+
+			<div class="comment-body"><p>I just tried it. I got zookeeper on my Macbook pro running within 5 minutes. This is a great guide. Thanks!</p>
+</div>
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+		</ol>
+
+			
+	
+							<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2013/02/23/setting-up-apache-zookeeper-on-os-x-in-five-minutes-or-less/#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://blog.kompany.org/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+																										
+
+
+												<input type="hidden" id="highlander_comment_nonce" name="highlander_comment_nonce" value="9e8100deb5" /><input type="hidden" name="_wp_http_referer" value="/2013/02/23/setting-up-apache-zookeeper-on-os-x-in-five-minutes-or-less/" />
+<input type="hidden" name="hc_post_as" id="hc_post_as" value="guest" />
+
+<div class="comment-form-field comment-textarea">
+	<label for="comment">Enter your comment here...</label>
+	<div id="comment-form-comment"><textarea id="comment" name="comment" title="Enter your comment here..."></textarea></div>
+</div>
+
+<div id="comment-form-identity">
+
+	<div id="comment-form-nascar">
+		<p>Fill in your details below or click an icon to log in:</p>
+		<ul>
+			<li class="selected" style="display:none;">
+				<a href="#comment-form-guest" id="postas-guest" title="Guest">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:WordPress.com" id="postas-wordpress" title="WordPress.com">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:Twitter" id="postas-twitter" title="Twitter">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:Facebook" id="postas-facebook" title="Facebook">
+					<span></span>
+				</a>
+			</li>
+			<li>
+		</ul>
+	</div>
+
+	<div id="comment-form-guest" class="comment-form-service selected">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+<a href="https://gravatar.com/site/signup/" target="_blank">				<img src="http://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&amp;d=identicon&amp;forcedefault=y&amp;r=G" alt="Gravatar" width="25" class="no-grav" />
+</a>			</div>
+
+				<div class="comment-form-fields">
+				<div class="comment-form-field comment-form-email">
+					<label for="email">Email <span class="required">(required)</span> <span class="nopublish">(Address never made public)</span></label>
+					<div class="comment-form-input"><input id="email" name="email" type="email" value="" /></div>
+				</div>
+				<div class="comment-form-field comment-form-author">
+					<label for="author">Name <span class="required">(required)</span></label>
+					<div class="comment-form-input"><input id="author" name="author" type="text" value="" /></div>
+				</div>
+				<div class="comment-form-field comment-form-url">
+					<label for="url">Website</label>
+					<div class="comment-form-input"><input id="url" name="url" type="text" value="" /></div>
+				</div>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-wordpress" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="https://s2.wp.com/wp-content/mu-plugins/highlander-comments/images/wplogo.png" alt="WordPress.com Logo" width="25" class="no-grav" />
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="wp_avatar" id="wordpress-avatar" class="comment-meta-wordpress" value="" />
+				<input type="hidden" name="wp_user_id" id="wordpress-user_id" class="comment-meta-wordpress" value="" />
+				<input type="hidden" name="wp_access_token" id="wordpress-access_token" class="comment-meta-wordpress" value="" />
+				<p class="comment-form-posting-as pa-wordpress"><strong></strong> You are commenting using your WordPress.com account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'wordpress' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-twitter" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="http://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&amp;d=identicon&amp;forcedefault=y&amp;r=G" alt="Twitter picture" width="25" class="no-grav" />
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="twitter_avatar" id="twitter-avatar" class="comment-meta-twitter" value="" />
+				<input type="hidden" name="twitter_user_id" id="twitter-user_id" class="comment-meta-twitter" value="" />
+				<input type="hidden" name="twitter_access_token" id="twitter-access_token" class="comment-meta-twitter" value="" />
+				<p class="comment-form-posting-as pa-twitter"><strong></strong> You are commenting using your Twitter account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'twitter' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-facebook" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="http://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&amp;d=identicon&amp;forcedefault=y&amp;r=G" alt="Facebook photo" width="25" class="no-grav" />
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="fb_avatar" id="facebook-avatar" class="comment-meta-facebook" value="" />
+				<input type="hidden" name="fb_user_id" id="facebook-user_id" class="comment-meta-facebook" value="" />
+				<input type="hidden" name="fb_access_token" id="facebook-access_token" class="comment-meta-facebook" value="" />
+				<p class="comment-form-posting-as pa-facebook"><strong></strong> You are commenting using your Facebook account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'facebook' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-googleplus" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="http://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&amp;d=identicon&amp;forcedefault=y&amp;r=G" alt="Google+ photo" width="25" class="no-grav" />
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="googleplus_avatar" id="googleplus-avatar" class="comment-meta-googleplus" value="" />
+				<input type="hidden" name="googleplus_user_id" id="googleplus-user_id" class="comment-meta-googleplus" value="" />
+				<input type="hidden" name="googleplus_access_token" id="googleplus-access_token" class="comment-meta-googleplus" value="" />
+				<p class="comment-form-posting-as pa-googleplus"><strong></strong> You are commenting using your Google+ account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'googleplus' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+
+	<div id="comment-form-load-service" class="comment-form-service">
+		<div class="comment-form-posting-as-cancel"><a href="javascript:HighlanderComments.cancelExternalWindow();">Cancel</a></div>
+		<p>Connecting to %s</p>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+var highlander_expando_javascript = function(){
+	var input = document.createElement( 'input' ),
+	    comment = jQuery( '#comment' );
+
+	if ( 'placeholder' in input ) {
+		comment.attr( 'placeholder', jQuery( '.comment-textarea label' ).remove().text() );
+	}
+
+	// Expando Mode: start small, then auto-resize on first click + text length
+	jQuery( '#comment-form-identity' ).hide();
+	jQuery( '#comment-form-subscribe' ).hide();
+	jQuery( '#commentform .form-submit' ).hide();
+
+	comment.css( { 'height':'10px' } ).one( 'focus', function() {
+		var timer = setInterval( HighlanderComments.resizeCallback, 10 )
+		jQuery( this ).animate( { 'height': HighlanderComments.initialHeight } ).delay( 100 ).queue( function(n) { clearInterval( timer ); HighlanderComments.resizeCallback(); n(); } );
+		jQuery( '#comment-form-identity' ).slideDown();
+		jQuery( '#comment-form-subscribe' ).slideDown();
+		jQuery( '#commentform .form-submit' ).slideDown();
+	});
+}
+jQuery(document).ready( highlander_expando_javascript );
+</script>
+
+<div id="comment-form-subscribe">
+	<p class="comment-subscription-form"><input type="checkbox" name="subscribe" id="subscribe" value="subscribe" style="width: auto;" tabindex="6"/> <label class="subscribe-label" id="subscribe-label" for="subscribe" style="display: inline;">Notify me of new comments via email.</label></p></div>
+
+						
+						<p class="form-submit"><input name="submit" type="submit" id="comment-submit" class="submit" value="Post Comment" /> <input type='hidden' name='comment_post_ID' value='121' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="a5069b8c16" /></p>
+<input type="hidden" name="genseq" value="1438347742" />
+<p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="231"/></p>					</form>
+							</div><!-- #respond -->
+			<div style="clear: both"></div>
+</div><!-- #comments -->
+	
+	
+	</div><!-- #content -->
+</div><!-- #container -->
+
+	</div><!-- #main -->
+
+	<div id="footer" class="clear-fix">
+		<div id="site-info">
+			<a href="https://wordpress.com/?ref=footer_blog">Blog at WordPress.com</a>.<span class="sep"> | </span><a href="https://wordpress.com/themes/imbalance2/" title="Learn more about this theme">The Imbalance 2 Theme</a>.		</div><!-- #site-info -->
+		<div id="footer-right">
+				</div>
+		<div id="footer-left">
+				</div>
+	</div><!-- #footer -->
+
+</div><!-- #wrapper -->
+<!-- wpcom_wp_footer -->
+<script type='text/javascript' src='//0.gravatar.com/js/gprofiles.js?ver=201531x'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://s2.wp.com/wp-content/mu-plugins/gravatar-hovercards/wpgroho.js?m=1380573781g'></script>
+
+	<script>
+		//initialize and attach hovercards to all gravatars
+		jQuery( document ).ready( function( $ ) {
+
+			if (typeof Gravatar === "undefined"){
+				return;
+			}
+
+			if ( typeof Gravatar.init !== "function" ) {
+				return;
+			}			
+
+			Gravatar.profile_cb = function( hash, id ) {
+				WPGroHo.syncProfileData( hash, id );
+			};
+			Gravatar.my_hash = WPGroHo.my_hash;
+			Gravatar.init( 'body', '#wp-admin-bar-my-account' );
+		});
+	</script>
+
+		<div style="display:none">
+	<div class="grofile-hash-map-003c73fc3c08774fb925cc534142d9bc">
+	</div>
+	<div class="grofile-hash-map-427b3b9611caae67dc8ddc28dd6b5571">
+	</div>
+	<div class="grofile-hash-map-003c73fc3c08774fb925cc534142d9bc">
+	</div>
+	<div class="grofile-hash-map-31c459844b1978e5b0b577d23d7d5279">
+	</div>
+	</div>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var HighlanderComments = {"loggingInText":"Logging In\u2026","submittingText":"Posting Comment\u2026","postCommentText":"Post Comment","connectingToText":"Connecting to %s","commentingAsText":"%1$s: You are commenting using your %2$s account.","logoutText":"Log Out","loginText":"Log In","connectURL":"https:\/\/2046k.wordpress.com\/public.api\/connect\/?action=request","logoutURL":"https:\/\/2046k.wordpress.com\/wp-login.php?action=logout&_wpnonce=5773900306","homeURL":"http:\/\/blog.kompany.org\/","postID":"121","gravDefault":"identicon","enterACommentError":"Please enter a comment","enterEmailError":"Please enter your email address here","invalidEmailError":"Invalid email address","enterAuthorError":"Please enter your name here","gravatarFromEmail":"This picture will show whenever you leave a comment. Click to customize it.","logInToExternalAccount":"Log in to use details from one of these accounts.","change":"Change","changeAccount":"Change Account","comment_registration":"","userIsLoggedIn":"","isJetpack":"0","text_direction":"ltr"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://s2.wp.com/_static/??/wp-content/js/jquery/jquery.autoresize.js,/wp-content/mu-plugins/highlander-comments/script.js?m=1424115551j'></script>
+
+	<div id="bit" class="loggedout-follow-normal">
+		<a class="bsub" href="javascript:void(0)"><span id='bsub-text'>Follow</span></a>
+		<div id="bitsubscribe">
+
+					<h3><label for="loggedout-follow-field">Follow &ldquo;2046k&rdquo;</label></h3>
+
+			<form action="https://subscribe.wordpress.com" method="post" accept-charset="utf-8" id="loggedout-follow">
+			<p>Get every new post delivered to your Inbox.</p>
+
+			<p id="loggedout-follow-error" style="display: none;"></p>
+
+			
+			<p><input type="email" name="email" value="Enter your email address" onfocus='this.value=(this.value=="Enter your email address") ? "" : this.value;' onblur='this.value=(this.value=="") ? "Enter your email address" : this.value;'  id="loggedout-follow-field"/></p>
+
+			<input type="hidden" name="action" value="subscribe"/>
+			<input type="hidden" name="blog_id" value="3673036"/>
+			<input type="hidden" name="source" value="http://blog.kompany.org/2013/02/23/setting-up-apache-zookeeper-on-os-x-in-five-minutes-or-less/"/>
+			<input type="hidden" name="sub-type" value="loggedout-follow"/>
+
+			<input type="hidden" id="_wpnonce" name="_wpnonce" value="2888224cf9" /><input type="hidden" name="_wp_http_referer" value="/2013/02/23/setting-up-apache-zookeeper-on-os-x-in-five-minutes-or-less/" />
+			<p id='bsub-subscribe-button'><input type="submit" value="Sign me up" /></p>
+			</form>
+					<div id='bsub-credit'><a href="https://wordpress.com/?ref=lof">Build a website with WordPress.com</a></div>
+		</div><!-- #bitsubscribe -->
+	</div><!-- #bit -->
+<script type='text/javascript' src='https://s1.wp.com/wp-content/mu-plugins/akismet-3.0/_inc/form.js?m=1404442431g'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var JetpackEmojiSettings = {"base_url":"http:\/\/s0.wp.com\/wp-content\/mu-plugins\/emoji\/twemoji\/"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://s0.wp.com/_static/??-eJyNyzEOwjAMheELkRqqStABcRbkWpVN7FgkoeX2lCFDJ5je8H8PFg+YrJAVkAwTvRjJ107yAbbEhrFOlL8Nk+rGwpM8vjtla6j9tQaPdWbLQJqEoSy7/emFit/xEf7TTd30ehr6sR8vx+EsHyz+TOE='></script>
+<script type="text/javascript">
+// <![CDATA[
+(function() {
+try{
+  if ( window.external &&'msIsSiteMode' in window.external) {
+    if (window.external.msIsSiteMode()) {
+      var jl = document.createElement('script');
+      jl.type='text/javascript';
+      jl.async=true;
+      jl.src='/wp-content/plugins/ie-sitemode/custom-jumplist.php';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(jl, s);
+    }
+  }
+}catch(e){}
+})();
+// ]]>
+</script><script src="//stats.wp.com/w.js?47" type="text/javascript" async defer></script>
+<script type="text/javascript">
+_tkq = window._tkq || [];
+_stq = window._stq || [];
+_tkq.push(['storeContext', {'blog_id':'3673036','blog_tz':'-7','user_lang':'en','blog_lang':'en','user_id':'0'}]);
+_stq.push(['view', {'blog':'3673036','v':'wpcom','tz':'-7','user_id':'0','post':'121','subd':'2046k'}]);
+_stq.push(['extra', {'crypt':'UE40eW5QN0p8M2Y/RE1TaVhzUzFMbjdWNHpwZGhTayxPSUFCMGRVYVNrSFguN3FwSmQ5RGtNX3VQcj1yVzhiflM1THQtLGFdQ2toOXYlVzVZZlllOVgvQTRhamR5VzhjU1dhdXU/L3R+QXNJWVdLUjE1ek9vLlVlW1VpZW9ObDIrayxGdz12NVFlMFVtMlh6Ny5jSXcubkw/czdYTnhzX1JCfEk5UnJmeVU3aFM0XThiQUIsdFR3UUxFcV9oJjNqSEFvVSxtXUtHLVU3WjVWbl8zMmtGVzB1XTN1Y2RORnBId3x2LHp+Mjk2dkpWelNpenk2aFlsXS5RQk9HPzlIWVRGXXRXdEF3Nys4ZF1GSksxSmVJWVlLWDdvMDlFWk0ucDJMdD1SfDRGQj1TN1hHLmxFZ1tGZ0xLSjEyVg=='}]);
+_stq.push([ 'clickTrackerInit', '3673036', '121' ]);
+	</script>
+<noscript><img src="http://pixel.wp.com/b.gif?v=noscript" style="height:0px;width:0px;overflow:hidden" alt="" /></noscript>
+<script>
+if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
+
+	wpcom_mobile_user_agent_info.init();
+	var mobileStatsQueryString = "";
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedPlatformName )
+		mobileStatsQueryString += "&x_" + 'mobile_platforms' + '=' + wpcom_mobile_user_agent_info.matchedPlatformName;
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedUserAgentName )
+		mobileStatsQueryString += "&x_" + 'mobile_devices' + '=' + wpcom_mobile_user_agent_info.matchedUserAgentName;
+	
+	if( wpcom_mobile_user_agent_info.isIPad() )
+		mobileStatsQueryString += "&x_" + 'ipad_views' + '=' + 'views';
+
+	if( "" != mobileStatsQueryString ) {
+		new Image().src = document.location.protocol + '//pixel.wp.com/g.gif?v=wpcom-no-pv' + mobileStatsQueryString + '&baba=' + Math.random();
+	}
+	
+}
+</script></body>
+</html>
+<!--
+	generated in 0.271 seconds
+	40466 bytes batcached for 300 seconds
+-->
+
